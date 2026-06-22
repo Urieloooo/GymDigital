@@ -12,13 +12,11 @@ class MembresiaController extends Controller
      */
     public function index()
     {
-        $membresias = Membresia::all();
-
-        return response()->json($membresias);
+        return Membresia::all();
     }
 
     /**
-     * Mostrar formulario de creación
+     * Formulario de creación
      */
     public function create()
     {
@@ -28,7 +26,7 @@ class MembresiaController extends Controller
     }
 
     /**
-     * Guardar una nueva membresía
+     * Guardar membresía
      */
     public function store(Request $request)
     {
@@ -42,58 +40,47 @@ class MembresiaController extends Controller
         $membresia = Membresia::create($request->all());
 
         return response()->json([
-            'mensaje' => 'Membresía registrada correctamente',
-            'membresia' => $membresia
-        ], 201);
-    }
-
-    /**
-     * Mostrar una membresía específica
-     */
-    public function show(string $id)
-    {
-        $membresia = Membresia::findOrFail($id);
-
-        return response()->json($membresia);
-    }
-
-    /**
-     * Mostrar formulario de edición
-     */
-    public function edit(string $id)
-    {
-        $membresia = Membresia::findOrFail($id);
-
-        return response()->json([
-            'mensaje' => 'Formulario para editar membresía',
-            'membresia' => $membresia
+            'mensaje' => 'Membresía creada correctamente',
+            'data' => $membresia
         ]);
     }
 
     /**
-     * Actualizar una membresía
+     * Mostrar una membresía
+     */
+    public function show(string $id)
+    {
+        return Membresia::findOrFail($id);
+    }
+
+    /**
+     * Formulario de edición
+     */
+    public function edit(string $id)
+    {
+        return response()->json([
+            'mensaje' => 'Formulario para editar membresía',
+            'membresia' => Membresia::findOrFail($id)
+        ]);
+    }
+
+    /**
+     * Actualizar membresía
      */
     public function update(Request $request, string $id)
     {
         $membresia = Membresia::findOrFail($id);
 
-        $request->validate([
-            'nombre' => 'required|max:50',
-            'duracion_dias' => 'required|integer',
-            'precio' => 'required|numeric',
-            'descripcion' => 'nullable|max:150'
-        ]);
-
         $membresia->update($request->all());
 
         return response()->json([
             'mensaje' => 'Membresía actualizada correctamente',
-            'membresia' => $membresia
+            'data' => $membresia
         ]);
     }
 
     /**
-     * Eliminar una membresía
+     * Eliminar membresía
      */
     public function destroy(string $id)
     {
